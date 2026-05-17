@@ -18,9 +18,6 @@
       height:100vh;
       overflow:hidden;
       background:#000;
-      display:flex;
-      justify-content:center;
-      align-items:center;
       font-family:Arial, Helvetica, sans-serif;
     }
 
@@ -35,112 +32,111 @@
       background-size:cover;
     }
 
-    /* =========================================
-       NÚMERO GRANDE NO QUADRO BEGE
-    ========================================= */
+    /* ===================================
+       NÚMERO PRINCIPAL
+    =================================== */
 
     .numero-atual{
+
       position:absolute;
 
-      /* AJUSTE FINO */
-      left:26.3%;
-      top:57%;
+      left:32%;
+      top:58%;
 
       transform:translate(-50%, -50%);
 
-      width:420px;
-      height:260px;
+      width:320px;
+      height:220px;
 
       display:flex;
       justify-content:center;
       align-items:center;
 
-      font-size:150px;
+      font-size:170px;
       font-weight:900;
 
       color:#000;
 
       user-select:none;
-
-      text-shadow:
-        2px 2px 0 rgba(255,255,255,0.15);
     }
 
-    /* =========================================
+    /* ===================================
        BOTÃO
-    ========================================= */
+    =================================== */
 
     .botao-sortear{
+
       position:absolute;
 
-      left:26.3%;
-      top:84%;
+      left:32%;
+      top:83%;
 
       transform:translateX(-50%);
 
-      width:430px;
-      height:100px;
+      width:420px;
+      height:105px;
 
-      background:transparent;
       border:none;
+      background:transparent;
+
       cursor:pointer;
     }
 
-    /* =========================================
-       NÚMEROS SORTEADOS
-    ========================================= */
+    /* ===================================
+       ÁREA DOS NÚMEROS SORTEADOS
+    =================================== */
 
     .numeros-sorteados{
 
       position:absolute;
 
-      left:68.7%;
-      top:30%;
+      left:74.2%;
+      top:51%;
 
-      transform:translateX(-50%);
+      transform:translate(-50%, -50%);
 
-      width:420px;
+      width:470px;
       height:420px;
 
       display:grid;
 
       grid-template-columns:repeat(5, 1fr);
 
-      gap:12px;
+      grid-auto-rows:90px;
 
-      align-content:start;
-
-      padding:10px;
+      justify-items:center;
+      align-items:center;
     }
 
     .bola{
 
-      width:58px;
-      height:58px;
+      width:62px;
+      height:62px;
 
       border-radius:50%;
 
-      background:#ff9100;
-
-      color:white;
-
-      font-size:24px;
-      font-weight:bold;
+      background:#ff9800;
 
       display:flex;
       justify-content:center;
       align-items:center;
 
+      color:#fff;
+
+      font-size:24px;
+      font-weight:bold;
+
       box-shadow:
-        0 0 10px rgba(255,145,0,0.8),
-        0 0 18px rgba(255,145,0,0.4);
+        0 0 15px rgba(255,152,0,0.8),
+        0 0 25px rgba(255,152,0,0.5);
 
       animation:aparecer .25s ease;
     }
 
     @keyframes aparecer{
+
       from{
-        transform:scale(.3);
+        transform:scale(.2);
         opacity:0;
       }
 
@@ -150,30 +146,23 @@
       }
     }
 
-    /* =========================================
+    /* ===================================
        RESPONSIVO
-    ========================================= */
+    =================================== */
 
     @media(max-width:1400px){
 
       .numero-atual{
-        width:320px;
-        height:220px;
-        font-size:110px;
-      }
-
-      .botao-sortear{
-        width:320px;
-        height:80px;
+        font-size:130px;
       }
 
       .numeros-sorteados{
-        width:350px;
+        width:390px;
       }
 
       .bola{
-        width:48px;
-        height:48px;
+        width:52px;
+        height:52px;
         font-size:20px;
       }
     }
@@ -185,7 +174,7 @@
 
   <div class="container">
 
-    <!-- Número principal -->
+    <!-- Número central -->
     <div class="numero-atual" id="numeroAtual">
       ?
     </div>
@@ -226,14 +215,15 @@
       const numero = numeros[indice];
       indice++;
 
-      // Número principal
+      // Número grande
       numeroAtual.textContent = numero;
 
-      // Adicionar ao quadro
+      // Criar bola
       const bola = document.createElement('div');
       bola.classList.add('bola');
       bola.textContent = numero;
 
+      // Adicionar alinhado no quadro
       numerosSorteados.appendChild(bola);
 
     });
