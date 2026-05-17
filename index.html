@@ -48,7 +48,7 @@ body{
 
     position:absolute;
 
-    top:315px;
+    top:312px;
     left:286px;
 
     width:350px;
@@ -64,7 +64,6 @@ body{
 
     text-shadow:
     0 4px 8px rgba(0,0,0,.18);
-
 }
 
 /* BOTÃO */
@@ -88,31 +87,29 @@ body{
     z-index:20;
 }
 
-/* GRID */
+/* GRID AJUSTADA EXATAMENTE AO FUNDO */
 
 .history-grid{
 
     position:absolute;
 
-    top:175px;
-    right:90px;
+    top:160px;
+    left:922px;
 
-    width:420px;
-    height:420px;
+    width:395px;
+    height:510px;
 
     display:grid;
 
-    grid-template-columns:repeat(5, 72px);
+    grid-template-columns:
+    repeat(5, 1fr);
 
-    grid-template-rows:repeat(5, 72px);
+    grid-template-rows:
+    repeat(5, 1fr);
 
-    justify-content:center;
+    justify-items:center;
 
-    align-content:start;
-
-    column-gap:18px;
-
-    row-gap:18px;
+    align-items:center;
 }
 
 /* BOLAS */
@@ -129,11 +126,11 @@ body{
     align-items:center;
 
     background:
-    radial-gradient(circle at 30% 30%, #ffab2d, #f06a00);
+    radial-gradient(circle at 30% 30%, #ffad32, #f06c00);
 
     color:white;
 
-    font-size:24px;
+    font-size:22px;
 
     font-family:Arial,sans-serif;
 
@@ -198,7 +195,7 @@ document.getElementById('grid');
 const mainDisplay =
 document.getElementById('mainNumber');
 
-/* LISTA */
+/* BINGO */
 
 let pool =
 Array.from({length:75}, (_,i)=>i+1);
