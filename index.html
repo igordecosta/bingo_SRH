@@ -1,164 +1,491 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bingo Junino - Arraiá da Sorte</title>
-    <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet">
-    <style>
-        body {
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background-color: #1a0f08;
-            overflow: hidden;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        /* Container Principal */
-        .bingo-board {
-            position: relative;
-            width: 1000px;
-            height: 562px;
-            background: url('background.jpg') no-repeat center center;
-            background-size: cover;
-            user-select: none;
-            box-shadow: 0 0 50px rgba(0,0,0,0.8);
-        }
+<title>Bingo Junino - Arraiá da Sorte</title>
 
-        /* Número Principal (O que acaba de ser sorteado) */
-        #mainNumber {
-            position: absolute;
-            top: 255px; /* Ajustado para centralizar no quadro bege */
-            left: 212px;
-            width: 282px;
-            height: 188px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 130px;
-            color: #1c1c1c;
-            font-family: 'Luckiest Guy', cursive;
-        }
+<link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet">
 
-        /* Botão Invisível posicionado sobre a arte */
-        #draw-btn {
-            position: absolute;
-            bottom: 52px;
-            left: 212px;
-            width: 284px;
-            height: 68px;
-            background: transparent;
-            border: none;
-            cursor: pointer;
-            z-index: 10;
-        }
+<style>
 
-        #draw-btn:active {
-            transform: scale(0.98);
-        }
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
 
-        /* Grade de Bolinhas Sorteadas (Onde estavam saindo tortas) */
-        .history-grid {
-            position: absolute;
-            top: 153px; /* Alinhamento vertical com os círculos da madeira */
-            right: 58px; /* Ajuste horizontal para centralizar nas colunas */
-            width: 345px;
-            height: 338px;
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            grid-template-rows: repeat(5, 1fr);
-            gap: 12px 14px; /* Espaçamento calibrado entre as bolinhas */
-            padding: 5px;
-            box-sizing: border-box;
-        }
+body{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+    background:#140b05;
+    overflow:hidden;
+}
 
-        .ball {
-            background: radial-gradient(circle at 30% 30%, #f37021, #d35400);
-            border: 2px solid #fff;
-            border-radius: 50%;
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 18px;
-            font-weight: bold;
-            font-family: Arial, sans-serif;
-            width: 54px;
-            height: 54px;
-            margin: auto;
-            box-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-            opacity: 0;
-            transform: scale(0.5);
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
+/* QUADRO PRINCIPAL */
 
-        .ball.active {
-            opacity: 1;
-            transform: scale(1);
-        }
+.bingo-board{
+    position:relative;
+    width:1366px;
+    height:768px;
 
-        /* Efeito de brilho na última bola sorteada no histórico */
-        .ball.latest {
-            box-shadow: 0 0 15px #fff;
-            border-color: #ffeb3b;
-        }
-    </style>
+    background:
+    linear-gradient(rgba(0,0,0,.45),rgba(0,0,0,.55)),
+    url('https://images.unsplash.com/photo-1527529482837-4698179dc6ce?q=80&w=1974&auto=format&fit=crop');
+
+    background-size:cover;
+    background-position:center;
+
+    overflow:hidden;
+}
+
+/* BANDEIRAS */
+
+.flags{
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:110px;
+    background:
+    repeating-linear-gradient(
+        90deg,
+        #ff5e00 0 40px,
+        #ffb300 40px 80px,
+        #d32f2f 80px 120px
+    );
+    clip-path:polygon(
+        0 0,
+        100% 0,
+        100% 40%,
+        98% 100%,
+        96% 40%,
+        94% 100%,
+        92% 40%,
+        90% 100%,
+        88% 40%,
+        86% 100%,
+        84% 40%,
+        82% 100%,
+        80% 40%,
+        78% 100%,
+        76% 40%,
+        74% 100%,
+        72% 40%,
+        70% 100%,
+        68% 40%,
+        66% 100%,
+        64% 40%,
+        62% 100%,
+        60% 40%,
+        58% 100%,
+        56% 40%,
+        54% 100%,
+        52% 40%,
+        50% 100%,
+        48% 40%,
+        46% 100%,
+        44% 40%,
+        42% 100%,
+        40% 40%,
+        38% 100%,
+        36% 40%,
+        34% 100%,
+        32% 40%,
+        30% 100%,
+        28% 40%,
+        26% 100%,
+        24% 40%,
+        22% 100%,
+        20% 40%,
+        18% 100%,
+        16% 40%,
+        14% 100%,
+        12% 40%,
+        10% 100%,
+        8% 40%,
+        6% 100%,
+        4% 40%,
+        2% 100%,
+        0 40%
+    );
+
+    opacity:.95;
+}
+
+/* TÍTULO */
+
+.title{
+    position:absolute;
+    top:40px;
+    left:190px;
+    text-align:center;
+    line-height:.85;
+}
+
+.title .bingo{
+    font-size:86px;
+    color:white;
+    font-family:'Luckiest Guy',cursive;
+    text-shadow:
+    0 4px 0 #4e2400,
+    0 10px 20px rgba(0,0,0,.7);
+}
+
+.title .junino{
+    font-size:130px;
+    color:#ffae00;
+    font-family:'Luckiest Guy',cursive;
+    text-shadow:
+    0 6px 0 #8b3b00,
+    0 15px 25px rgba(0,0,0,.8);
+}
+
+.subtitle{
+    margin-top:8px;
+    display:inline-block;
+    background:#ff6b00;
+    color:white;
+    padding:10px 34px;
+    border-radius:8px;
+    font-size:34px;
+    font-family:'Luckiest Guy',cursive;
+    box-shadow:0 4px 0 #9b3e00;
+}
+
+/* FOGUEIRA */
+
+.fire{
+    position:absolute;
+    left:25px;
+    bottom:50px;
+    font-size:180px;
+    filter:drop-shadow(0 0 20px orange);
+}
+
+/* QUADRO NÚMERO */
+
+#mainNumber{
+    position:absolute;
+    top:330px;
+    left:230px;
+
+    width:420px;
+    height:250px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:#f7e4bc;
+
+    border-radius:28px;
+
+    border:8px solid #efc486;
+
+    box-shadow:
+    inset 0 0 0 4px #bc541e,
+    0 10px 30px rgba(0,0,0,.45);
+
+    font-size:170px;
+    color:#1d1007;
+    font-family:'Luckiest Guy',cursive;
+}
+
+/* BORDA TRACEJADA */
+
+#mainNumber::before{
+    content:"";
+    position:absolute;
+    inset:12px;
+    border:4px dashed #b04b1d;
+    border-radius:18px;
+}
+
+/* BOTÃO */
+
+#draw-btn{
+    position:absolute;
+
+    bottom:90px;
+    left:230px;
+
+    width:420px;
+    height:95px;
+
+    border:none;
+    border-radius:24px;
+
+    background:linear-gradient(#ff8b00,#ff6200);
+
+    box-shadow:
+    0 7px 0 #b34700,
+    0 15px 25px rgba(0,0,0,.45);
+
+    cursor:pointer;
+}
+
+#draw-btn:active{
+    transform:translateY(4px);
+}
+
+#draw-btn::after{
+    content:"SORTEAR NÚMERO";
+
+    position:absolute;
+    inset:0;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    color:white;
+    font-size:42px;
+    font-family:'Luckiest Guy',cursive;
+}
+
+/* PAINEL DIREITO */
+
+.right-panel{
+    position:absolute;
+
+    top:140px;
+    right:90px;
+
+    width:470px;
+    height:560px;
+
+    background:
+    linear-gradient(rgba(29,10,2,.95),rgba(20,7,1,.96));
+
+    border-radius:30px;
+
+    border:4px solid #b04f1a;
+
+    box-shadow:
+    inset 0 0 30px rgba(0,0,0,.6),
+    0 10px 30px rgba(0,0,0,.45);
+}
+
+/* TÍTULO DIREITO */
+
+.panel-title{
+    text-align:center;
+
+    margin-top:25px;
+    margin-bottom:28px;
+
+    color:white;
+
+    font-size:42px;
+
+    font-family:'Luckiest Guy',cursive;
+
+    text-shadow:0 3px 8px rgba(0,0,0,.5);
+}
+
+/* GRID AJUSTADA */
+
+.history-grid{
+
+    position:absolute;
+
+    top:120px;
+    left:34px;
+
+    width:400px;
+    height:400px;
+
+    display:grid;
+
+    grid-template-columns:repeat(5, 1fr);
+
+    justify-items:center;
+    align-items:center;
+
+    row-gap:18px;
+    column-gap:12px;
+}
+
+/* BOLAS AJUSTADAS */
+
+.ball{
+
+    width:64px;
+    height:64px;
+
+    border-radius:50%;
+
+    background:
+    radial-gradient(circle at 30% 30%, #ff9d00, #f06a00);
+
+    border:3px solid rgba(255,255,255,.18);
+
+    color:white;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    font-size:28px;
+    font-weight:bold;
+
+    font-family:Arial,sans-serif;
+
+    box-shadow:
+    inset 0 0 0 3px rgba(255,255,255,.08),
+    0 5px 10px rgba(0,0,0,.35);
+
+    opacity:0;
+    transform:scale(.5);
+
+    transition:.25s;
+}
+
+/* ATIVA */
+
+.ball.active{
+    opacity:1;
+    transform:scale(1);
+}
+
+/* ÚLTIMA */
+
+.ball.latest{
+    border:3px solid #ffe082;
+    box-shadow:
+    0 0 15px #fff2a8,
+    0 5px 10px rgba(0,0,0,.35);
+}
+
+/* TOALHA */
+
+.bottom{
+    position:absolute;
+    bottom:0;
+    left:0;
+
+    width:100%;
+    height:26px;
+
+    background:
+    repeating-linear-gradient(
+        90deg,
+        #692100 0 24px,
+        #d65a00 24px 48px
+    );
+}
+
+</style>
 </head>
+
 <body>
 
-    <div class="bingo-board">
-        <div id="mainNumber">--</div>
-        
-        <button id="draw-btn" onclick="draw()"></button>
-        
-        <div class="history-grid" id="grid"></div>
+<div class="bingo-board">
+
+<div class="flags"></div>
+
+<div class="fire">🔥</div>
+
+<div class="title">
+    <div class="bingo">BINGO</div>
+    <div class="junino">JUNINO</div>
+
+    <div class="subtitle">
+        ARRAIÁ DA SORTE
     </div>
+</div>
 
-    <script>
-        const grid = document.getElementById('grid');
-        const mainDisplay = document.getElementById('mainNumber');
-        
-        // Bingo de 1 a 75
-        let pool = Array.from({length: 75}, (_, i) => i + 1);
-        let drawn = [];
+<div id="mainNumber">27</div>
 
-        // Inicializa a grade com 25 espaços vazios
-        for (let i = 0; i < 25; i++) {
-            const b = document.createElement('div');
-            b.className = 'ball';
-            grid.appendChild(b);
-        }
+<button id="draw-btn" onclick="draw()"></button>
 
-        function draw() {
-            if (pool.length === 0) {
-                mainDisplay.innerText = "FIM";
-                mainDisplay.style.fontSize = "80px";
-                return;
+<div class="right-panel">
+
+<div class="panel-title">
+⭐ NÚMEROS SORTEADOS ⭐
+</div>
+
+<div class="history-grid" id="grid"></div>
+
+</div>
+
+<div class="bottom"></div>
+
+</div>
+
+<script>
+
+const grid = document.getElementById('grid');
+const mainDisplay = document.getElementById('mainNumber');
+
+let pool = Array.from({length:75}, (_,i)=>i+1);
+
+let drawn = [];
+
+/* CRIA 25 ESPAÇOS */
+
+for(let i=0;i<25;i++){
+
+    const b = document.createElement('div');
+
+    b.className = 'ball';
+
+    grid.appendChild(b);
+
+}
+
+/* SORTEAR */
+
+function draw(){
+
+    if(pool.length === 0){
+
+        mainDisplay.innerText = 'FIM';
+        mainDisplay.style.fontSize = '100px';
+
+        return;
+    }
+
+    const idx = Math.floor(Math.random()*pool.length);
+
+    const num = pool.splice(idx,1)[0];
+
+    drawn.unshift(num);
+
+    mainDisplay.innerText =
+    num.toString().padStart(2,'0');
+
+    const balls =
+    document.querySelectorAll('.ball');
+
+    balls.forEach((ball,i)=>{
+
+        ball.classList.remove('latest');
+
+        if(drawn[i]){
+
+            ball.innerText =
+            drawn[i].toString().padStart(2,'0');
+
+            ball.classList.add('active');
+
+            if(i===0){
+
+                ball.classList.add('latest');
+
             }
 
-            // Sorteia um número e remove da lista
-            const idx = Math.floor(Math.random() * pool.length);
-            const num = pool.splice(idx, 1)[0];
-            
-            // Adiciona ao topo da lista de sorteados
-            drawn.unshift(num);
-
-            // Atualiza o quadro central
-            mainDisplay.innerText = num.toString().padStart(2, '0');
-
-            // Atualiza as bolinhas laterais
-            const balls = document.querySelectorAll('.ball');
-            balls.forEach((ball, i) => {
-                ball.classList.remove('latest');
-                if (drawn[i]) {
-                    ball.innerText = drawn[i].toString().padStart(2, '0');
-                    ball.classList.add('active');
-                    if (i === 0) ball.classList.add('latest'); // Destaca a mais recente
-                }
-            });
         }
-    </script>
+
+    });
+
+}
+
+</script>
+
 </body>
 </html>
