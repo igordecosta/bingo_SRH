@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Bingo Junino</title>
 
@@ -23,7 +24,7 @@ body{
 
     background:
     linear-gradient(rgba(0,0,0,.45), rgba(0,0,0,.45)),
-    url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=2000&auto=format&fit=crop');
+    url('https://images.unsplash.com/photo-1461354464878-ad92f492a5a0?q=80&w=2000&auto=format&fit=crop');
 
     background-size:cover;
     background-position:center;
@@ -31,55 +32,106 @@ body{
     color:white;
 }
 
-/* BARRA SUPERIOR */
+/* BANDEIRINHAS */
 
-.topo{
+.bandeiras{
     width:100%;
-    height:120px;
-    background:
-    url('https://i.imgur.com/8Qf6R0R.png');
+    height:70px;
 
-    background-size:contain;
-    background-repeat:repeat-x;
+    background:
+    repeating-linear-gradient(
+        90deg,
+        #f97316 0px,
+        #f97316 40px,
+        transparent 40px,
+        transparent 80px
+    );
+
+    clip-path: polygon(
+        0 0,
+        100% 0,
+        100% 35%,
+        97% 100%,
+        94% 35%,
+        91% 100%,
+        88% 35%,
+        85% 100%,
+        82% 35%,
+        79% 100%,
+        76% 35%,
+        73% 100%,
+        70% 35%,
+        67% 100%,
+        64% 35%,
+        61% 100%,
+        58% 35%,
+        55% 100%,
+        52% 35%,
+        49% 100%,
+        46% 35%,
+        43% 100%,
+        40% 35%,
+        37% 100%,
+        34% 35%,
+        31% 100%,
+        28% 35%,
+        25% 100%,
+        22% 35%,
+        19% 100%,
+        16% 35%,
+        13% 100%,
+        10% 35%,
+        7% 100%,
+        4% 35%,
+        1% 100%,
+        0 35%
+    );
 }
 
-/* CONTAINER PRINCIPAL */
+/* CONTAINER */
 
 .container{
     display:flex;
-    height:calc(100vh - 120px);
+    height:calc(100vh - 70px);
     padding:30px 50px;
     gap:40px;
 }
 
-/* LADO ESQUERDO */
+/* ESQUERDA */
 
 .esquerda{
     width:60%;
+
     display:flex;
     flex-direction:column;
-    justify-content:center;
     align-items:center;
+    justify-content:center;
 }
 
 .titulo{
-    font-size:70px;
+    font-size:72px;
     font-weight:700;
+
     text-shadow:4px 4px 0 #000;
-    margin-bottom:10px;
+
+    margin-bottom:15px;
 }
 
 .subtitulo{
-    font-size:26px;
+    font-size:28px;
+
     margin-bottom:40px;
 }
 
 .numero{
     width:380px;
     height:380px;
-    background:#ea580c;
-    border:12px dashed white;
+
     border-radius:35px;
+
+    background:#ea580c;
+
+    border:12px dashed white;
 
     display:flex;
     align-items:center;
@@ -89,8 +141,8 @@ body{
     font-weight:bold;
 
     box-shadow:
-    0 0 50px rgba(0,0,0,.5),
-    inset 0 0 25px rgba(255,255,255,.2);
+    0 0 40px rgba(0,0,0,.5),
+    inset 0 0 20px rgba(255,255,255,.15);
 
     animation:pulse 1s infinite alternate;
 }
@@ -109,14 +161,15 @@ button{
     margin-top:35px;
 
     border:none;
-    background:#16a34a;
+
+    background:#f97316;
 
     color:white;
 
+    padding:20px 60px;
+
     font-size:34px;
     font-weight:bold;
-
-    padding:20px 50px;
 
     border-radius:20px;
 
@@ -124,14 +177,14 @@ button{
 
     transition:.3s;
 
-    box-shadow:0 10px 25px rgba(0,0,0,.4);
+    box-shadow:0 10px 20px rgba(0,0,0,.35);
 }
 
 button:hover{
     transform:scale(1.05);
 }
 
-/* LADO DIREITO */
+/* DIREITA */
 
 .direita{
     width:40%;
@@ -140,25 +193,29 @@ button:hover{
 
     border-radius:30px;
 
-    padding:25px;
-
     backdrop-filter:blur(6px);
+
+    padding:25px;
 
     overflow:hidden;
 }
 
 .titulo-historico{
     text-align:center;
+
     font-size:38px;
+
     margin-bottom:25px;
 }
 
 .historico{
     display:flex;
+
     flex-wrap:wrap;
-    gap:15px;
 
     justify-content:center;
+
+    gap:15px;
 }
 
 .bola{
@@ -185,16 +242,26 @@ button:hover{
 
 .rodape{
     position:absolute;
+
     bottom:10px;
+
     width:100%;
+
     text-align:center;
+
     font-size:24px;
+
     animation:pisca 1s infinite alternate;
 }
 
 @keyframes pisca{
-    from{opacity:0.6;}
-    to{opacity:1;}
+    from{
+        opacity:0.7;
+    }
+
+    to{
+        opacity:1;
+    }
 }
 
 </style>
@@ -202,7 +269,7 @@ button:hover{
 
 <body>
 
-<div class="topo"></div>
+<div class="bandeiras"></div>
 
 <div class="container">
 
@@ -213,7 +280,7 @@ button:hover{
         </div>
 
         <div class="subtitulo">
-            🎶 Arraiá da Sorte 🎶
+            🔥 Arraiá da Sorte 🔥
         </div>
 
         <div class="numero" id="numero">
@@ -221,7 +288,7 @@ button:hover{
         </div>
 
         <button onclick="sortear()">
-            🎲 SORTEAR
+            SORTEAR
         </button>
 
     </div>
@@ -229,7 +296,7 @@ button:hover{
     <div class="direita">
 
         <div class="titulo-historico">
-            🔥 Números Sorteados 🔥
+            Números Sorteados
         </div>
 
         <div class="historico" id="historico"></div>
@@ -239,7 +306,7 @@ button:hover{
 </div>
 
 <div class="rodape">
-🪗 Pegue sua cartela e boa sorte! 🪗
+🪗 Boa sorte no bingo! 🪗
 </div>
 
 <script>
@@ -263,7 +330,7 @@ function sortear(){
 
     let numero = numeros[indice];
 
-    numeros.splice(indice,1);
+    numeros.splice(indice, 1);
 
     document.getElementById("numero").innerText = numero;
 
@@ -274,21 +341,6 @@ function sortear(){
     bola.innerText = numero;
 
     document.getElementById("historico").prepend(bola);
-
-    anunciar(numero);
-}
-
-function anunciar(numero){
-
-    let fala = new SpeechSynthesisUtterance(
-        `Atenção pessoal do arraiá! Número sorteado ${numero}`
-    );
-
-    fala.lang = "pt-BR";
-
-    fala.rate = 0.9;
-
-    speechSynthesis.speak(fala);
 }
 
 </script>
