@@ -4,88 +4,78 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bingo Junino - Arraiá da Sorte</title>
-    <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Bangers&family=Roboto:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --orange-main: #f37021;
-            --dark-wood: #2a1a0f;
-        }
-
         body {
             margin: 0;
-            padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background-color: #000;
-            font-family: 'Roboto', sans-serif;
-            overflow: hidden;
+            background-color: #1a0f08;
+            font-family: Arial, sans-serif;
         }
 
-        /* Container Principal com a Imagem de Fundo */
-        .bingo-container {
+        /* Container que usa a sua imagem como fundo */
+        .bingo-board {
             position: relative;
             width: 1000px;
             height: 562px;
-            background: url('bingo-bg.jpg') no-repeat center center;
-            background-size: cover;
-            border: 5px solid #333;
-            box-shadow: 0 0 50px rgba(0,0,0,0.8);
-            border-radius: 15px;
+            /* Usei um link da imagem para garantir que carregue aí */
+            background: url('https://img.freepik.com/fotos-premium/festa-junina-banner-com-elementos-de-bingo-e-fogueira_1029473-455797.jpg') no-repeat center center;
+            background-size: contain;
+            user-select: none;
         }
 
-        /* Número Sorteado (O Grande) */
-        .current-number-display {
+        /* O número grande que aparece no meio */
+        #mainNumber {
             position: absolute;
-            top: 245px;
-            left: 215px;
-            width: 275px;
-            height: 185px;
+            top: 242px;
+            left: 212px;
+            width: 282px;
+            height: 188px;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 110px;
-            color: #1a1a1a;
+            font-size: 130px;
+            color: #1c1c1c;
             font-family: 'Luckiest Guy', cursive;
-            z-index: 2;
+            text-shadow: 2px 2px 0px rgba(255,255,255,0.5);
         }
 
-        /* Botão Sorteador */
+        /* Botão invisível sobre o botão de sortear da imagem */
         #draw-btn {
             position: absolute;
-            bottom: 55px;
+            bottom: 52px;
             left: 212px;
-            width: 285px;
-            height: 65px;
+            width: 284px;
+            height: 68px;
             background: transparent;
             border: none;
             cursor: pointer;
-            outline: none;
-            z-index: 10;
+            border-radius: 20px;
         }
 
         #draw-btn:active {
-            transform: scale(0.95);
+            background: rgba(255, 255, 255, 0.1);
         }
 
-        /* Painel Lateral de Números Sorteados */
+        /* Grade de números sorteados na lateral */
         .history-grid {
             position: absolute;
-            top: 152px;
-            right: 63px;
-            width: 335px;
-            height: 335px;
+            top: 153px;
+            right: 65px;
+            width: 332px;
+            height: 334px;
             display: grid;
             grid-template-columns: repeat(5, 1fr);
             grid-template-rows: repeat(5, 1fr);
             gap: 12px;
             padding: 5px;
-            box-sizing: border-box;
         }
 
-        .number-ball {
-            background: rgba(243, 112, 33, 0.9);
+        .ball {
+            background: radial-gradient(circle at 30% 30%, #ff8c42, #d35400);
             border: 2px solid #fff;
             border-radius: 50%;
             color: white;
@@ -94,85 +84,59 @@
             align-items: center;
             font-size: 20px;
             font-weight: bold;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.3);
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.5);
             opacity: 0;
-            transform: scale(0);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform: scale(0.5);
+            transition: all 0.3s ease;
         }
 
-        .number-ball.active {
+        .ball.active {
             opacity: 1;
             transform: scale(1);
-        }
-
-        /* Estilo para avisar que acabou */
-        .finished {
-            font-size: 30px !important;
-            color: #d00;
         }
     </style>
 </head>
 <body>
 
-    <div class="bingo-container">
-        <div class="current-number-display" id="mainNumber">--</div>
-
-        <button id="draw-btn" title="Clique para sortear"></button>
-
-        <div class="history-grid" id="historyGrid">
-            </div>
+    <div class="bingo-board">
+        <div id="mainNumber">--</div>
+        <button id="draw-btn" onclick="draw()"></button>
+        <div class="history-grid" id="grid"></div>
     </div>
 
     <script>
-        const mainNumberDisplay = document.getElementById('mainNumber');
-        const drawBtn = document.getElementById('draw-btn');
-        const historyGrid = document.getElementById('historyGrid');
+        const grid = document.getElementById('grid');
+        const mainDisplay = document.getElementById('mainNumber');
+        let pool = Array.from({length: 75}, (_, i) => i + 1);
+        let drawn = [];
 
-        let numbersPool = Array.from({length: 75}, (_, i) => i + 1); // Bingo padrão 75 números
-        let drawnNumbers = [];
-
-        // Inicializa o grid vazio (apenas visual)
-        function initGrid() {
-            historyGrid.innerHTML = '';
-            for (let i = 0; i < 25; i++) {
-                const ball = document.createElement('div');
-                ball.className = 'number-ball';
-                ball.id = `ball-${i}`;
-                historyGrid.appendChild(ball);
-            }
+        // Cria os espaços das bolinhas
+        for (let i = 0; i < 25; i++) {
+            const b = document.createElement('div');
+            b.className = 'ball';
+            grid.appendChild(b);
         }
 
-        function drawNumber() {
-            if (numbersPool.length === 0) {
-                mainNumberDisplay.innerText = "FIM";
-                mainNumberDisplay.classList.add('finished');
+        function draw() {
+            if (pool.length === 0) {
+                mainDisplay.innerText = "!!";
                 return;
             }
 
-            // Sorteio
-            const randomIndex = Math.floor(Math.random() * numbersPool.length);
-            const selected = numbersPool.splice(randomIndex, 1)[0];
-            drawnNumbers.unshift(selected); // Adiciona ao início do histórico
+            const idx = Math.floor(Math.random() * pool.length);
+            const num = pool.splice(idx, 1)[0];
+            drawn.unshift(num);
 
-            // Atualiza display principal
-            mainNumberDisplay.innerText = selected.toString().padStart(2, '0');
+            mainDisplay.innerText = num.toString().padStart(2, '0');
 
-            // Atualiza o grid lateral (mostra os últimos 25 sorteados)
-            updateGrid();
-        }
-
-        function updateGrid() {
-            const balls = document.querySelectorAll('.number-ball');
-            balls.forEach((ball, index) => {
-                if (drawnNumbers[index]) {
-                    ball.innerText = drawnNumbers[index].toString().padStart(2, '0');
+            const balls = document.querySelectorAll('.ball');
+            balls.forEach((ball, i) => {
+                if (drawn[i]) {
+                    ball.innerText = drawn[i].toString().padStart(2, '0');
                     ball.classList.add('active');
                 }
             });
         }
-
-        drawBtn.addEventListener('click', drawNumber);
-        initGrid();
     </script>
 </body>
 </html>
